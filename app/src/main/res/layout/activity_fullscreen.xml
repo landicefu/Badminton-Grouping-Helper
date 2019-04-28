@@ -5,15 +5,15 @@
         android:id="@+id/contentView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#0099cc"
-        tools:context=".FullscreenActivity">
+        android:background="@color/background"
+        tools:context=".ui.FullscreenActivity">
 
     <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:orientation="vertical"
-            android:fitsSystemWindows="true">
+            android:fitsSystemWindows="true"
+            android:orientation="vertical">
 
         <Button
                 style="@style/MenuButtonStyle"
@@ -31,5 +31,10 @@
                 android:text="EDIT PLAYERS" />
 
     </LinearLayout>
+
+    <FrameLayout
+            android:id="@+id/mainContainer"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
 
 </FrameLayout>
