@@ -77,6 +77,26 @@
             <rule>
               <match>
                 <AND>
+                  <NAME>android:layout_width</NAME>
+                  <XML_ATTRIBUTE />
+                </AND>
+              </match>
+            </rule>
+          </section>
+          <section>
+            <rule>
+              <match>
+                <AND>
+                  <NAME>android:layout_height</NAME>
+                  <XML_ATTRIBUTE />
+                </AND>
+              </match>
+            </rule>
+          </section>
+          <section>
+            <rule>
+              <match>
+                <AND>
                   <NAME>android:layout_.*</NAME>
                   <XML_ATTRIBUTE />
                 </AND>
