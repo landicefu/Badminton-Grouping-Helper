@@ -1,6 +1,7 @@
 package tw.lifehackers.bghelper
 
 import android.app.Application
+import tw.lifehackers.bghelper.model.Court
 import tw.lifehackers.bghelper.model.Player
 import tw.lifehackers.bghelper.model.PlayerPair
 
@@ -9,7 +10,9 @@ class App : Application() {
     companion object {
         private val playerList = mutableListOf<Player>()
         private val playerPairList = mutableListOf<PlayerPair>()
+
         val numTimesPlayed = hashMapOf<String, Int>()
+        val courts = mutableListOf<Court>()
 
         fun getPlayerList() = playerList.toList()
 
