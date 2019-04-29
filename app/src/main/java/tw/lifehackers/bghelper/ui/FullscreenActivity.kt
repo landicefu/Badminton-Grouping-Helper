@@ -11,7 +11,7 @@ import tw.lifehackers.bghelper.ui.matches.MatchesFragment
 class FullscreenActivity : AppCompatActivity(), View.OnClickListener {
 
     companion object {
-        private const val APP_FINISH_THREHOLD = 800L
+        private const val APP_FINISH_THRESHOLD = 800L
     }
 
     private var lastBackPressTimeStamp = 0L
@@ -40,7 +40,7 @@ class FullscreenActivity : AppCompatActivity(), View.OnClickListener {
         }
 
         val currentTimeStamp = System.currentTimeMillis()
-        if (currentTimeStamp - lastBackPressTimeStamp < APP_FINISH_THREHOLD) {
+        if (currentTimeStamp - lastBackPressTimeStamp < APP_FINISH_THRESHOLD) {
             finish()
         } else {
             lastBackPressTimeStamp = currentTimeStamp
