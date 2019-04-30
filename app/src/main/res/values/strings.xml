@@ -7,4 +7,7 @@
     <string name="matches">matches</string>
     <string name="edit_players">edit players</string>
     <string name="preferences">preferences</string>
+    <string name="newUserTitle">Enter the name of the user</string>
+    <string name="ok">OK</string>
+    <string name="cancel">CANCEL</string>
 </resources>
