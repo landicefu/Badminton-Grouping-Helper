@@ -3,6 +3,7 @@ package tw.lifehackers.bghelper.ui.matches
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import tw.lifehackers.bghelper.App
+import tw.lifehackers.bghelper.model.Court
 
 class CourtAdapter(
     private val listener: Listener
@@ -13,9 +14,11 @@ class CourtAdapter(
         const val ITEM_TYPE_ADD_COURT = 1
     }
 
-    override fun getItemCount(): Int = App.courts.size + 1
+    private val courts: List<Court> get() = App.gameStates.courts
 
-    override fun getItemViewType(position: Int): Int = if (position == App.courts.size) {
+    override fun getItemCount(): Int = courts.size + 1
+
+    override fun getItemViewType(position: Int): Int = if (position == courts.size) {
         ITEM_TYPE_ADD_COURT
     } else {
         ITEM_TYPE_COURT
@@ -29,7 +32,7 @@ class CourtAdapter(
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (holder) {
-            is CourtViewHolder -> holder.bind(App.courts[position])
+            is CourtViewHolder -> holder.bind(courts[position])
             is ButtonViewHolder -> holder.bind("add court") { listener.addCourt() }
         }
     }

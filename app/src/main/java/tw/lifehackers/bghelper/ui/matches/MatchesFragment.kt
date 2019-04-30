@@ -32,7 +32,8 @@ class MatchesFragment : Fragment(), CourtAdapter.Listener {
     }
 
     override fun addCourt() {
-        App.courts.add(Court())
-        adapter.notifyItemInserted(App.courts.size - 1)
+        val courts = App.gameStates.courts
+        courts.add(Court())
+        adapter.notifyItemInserted(courts.size - 1)
     }
 }

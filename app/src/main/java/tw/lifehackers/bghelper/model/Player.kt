@@ -5,9 +5,9 @@ import tw.lifehackers.bghelper.App
 data class Player(
     val name: String
 ) {
-    fun getNumTimesPlayed(): Int = App.numTimesPlayed[name] ?: 0
+    fun getNumTimesPlayed(): Int = App.gameStates.numTimesPlayed[name] ?: 0
 
     fun increaseNumTimesPlayed() {
-        App.numTimesPlayed[name] = getNumTimesPlayed() + 1
+        App.gameStates.numTimesPlayed[name] = getNumTimesPlayed() + 1
     }
 }
