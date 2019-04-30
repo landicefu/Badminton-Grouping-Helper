@@ -10,10 +10,12 @@ class App : Application() {
 
     companion object {
         val gameStates: GameStates = GameStates()
+        lateinit var instance: App private set
     }
 
     override fun onCreate() {
         super.onCreate()
+        instance = this
         initPlayerList()
         initCourts()
     }

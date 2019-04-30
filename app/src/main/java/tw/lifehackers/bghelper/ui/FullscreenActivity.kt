@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_fullscreen.*
 import tw.lifehackers.bghelper.R
 import tw.lifehackers.bghelper.ui.matches.MatchesFragment
+import tw.lifehackers.bghelper.ui.players.PlayerListFragment
 
 class FullscreenActivity : AppCompatActivity(), View.OnClickListener {
 
@@ -67,6 +68,11 @@ class FullscreenActivity : AppCompatActivity(), View.OnClickListener {
             }
 
             R.id.editPlayersButton -> {
+                supportFragmentManager
+                    .beginTransaction()
+                    .replace(R.id.mainContainer, PlayerListFragment())
+                    .addToBackStack(null)
+                    .commitAllowingStateLoss()
             }
         }
     }
