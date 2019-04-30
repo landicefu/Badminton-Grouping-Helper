@@ -4,6 +4,7 @@ import android.app.Application
 import tw.lifehackers.bghelper.model.Court
 import tw.lifehackers.bghelper.model.Player
 import tw.lifehackers.bghelper.model.PlayerPair
+import tw.lifehackers.bghelper.model.Team
 
 class App : Application() {
 
@@ -37,11 +38,15 @@ class App : Application() {
             }
             playerList.add(player)
         }
+
+        fun findPlayer(name: String): Player? =
+                playerList.firstOrNull { player -> player.name == name }
     }
 
     override fun onCreate() {
         super.onCreate()
         initPlayerList()
+        initTest()
     }
 
     private fun initPlayerList() {
@@ -51,6 +56,20 @@ class App : Application() {
                 playerPairList.add(PlayerPair.create(playerList[index1], playerList[index2]))
             }
         }
+    }
+
+    private fun initTest() {
+        val t1p1 = findPlayer("Jack") ?: return
+        val t1p2 = findPlayer("逸涵") ?: return
+        val t2p1 = findPlayer("Flora") ?: return
+        val t2p2 = findPlayer("Simon") ?: return
+        courts.add(Court(Team(t1p1, t1p2), Team(t2p1, t2p2), false))
+
+        val t3p1 = findPlayer("Eric") ?: return
+        val t3p2 = findPlayer("Tony") ?: return
+        val t4p1 = findPlayer("Dennis") ?: return
+        val t4p2 = findPlayer("Fred") ?: return
+        courts.add(Court(Team(t3p1, t3p2), Team(t4p1, t4p2), true))
     }
 
 }

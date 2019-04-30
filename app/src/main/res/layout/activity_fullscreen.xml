@@ -20,7 +20,7 @@
                 android:id="@+id/matchesButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="MATCHES" />
+                android:text="matches" />
 
         <Button
                 style="@style/MenuButtonStyle"
@@ -28,7 +28,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="48dp"
-                android:text="EDIT PLAYERS" />
+                android:text="edit players" />
 
     </LinearLayout>
 
