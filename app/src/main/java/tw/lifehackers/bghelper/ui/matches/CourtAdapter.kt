@@ -4,7 +4,9 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import tw.lifehackers.bghelper.App
 
-class CourtAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class CourtAdapter(
+    private val listener: Listener
+) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     companion object {
         const val ITEM_TYPE_COURT = 0
@@ -28,8 +30,11 @@ class CourtAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (holder) {
             is CourtViewHolder -> holder.bind(App.courts[position])
-            is ButtonViewHolder -> holder.bind("add court")
+            is ButtonViewHolder -> holder.bind("add court") { listener.addCourt() }
         }
     }
 
+    interface Listener {
+        fun addCourt()
+    }
 }
