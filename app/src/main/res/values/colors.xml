@@ -6,6 +6,7 @@
     <color name="background">#0099CC</color>
 
     <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
     <color name="red">#FF0000</color>
     <color name="blackOverlay">#66000000</color>
     <color name="blackOverlayLight">#33000000</color>
