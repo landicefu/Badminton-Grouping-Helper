@@ -14,6 +14,7 @@ import tw.lifehackers.bghelper.App
 import tw.lifehackers.bghelper.R
 import tw.lifehackers.bghelper.model.Player
 import tw.lifehackers.bghelper.util.ItemSpacingDecoration
+import tw.lifehackers.bghelper.util.scrollToLastItem
 import tw.lifehackers.bghelper.util.warn
 
 class PlayerListFragment : Fragment(), PlayerAdapter.Listener {
@@ -51,6 +52,7 @@ class PlayerListFragment : Fragment(), PlayerAdapter.Listener {
 
                 App.gameStates.addPlayer(Player(playerName))
                 playerAdapter.notifyItemInserted(App.gameStates.getPlayerList().size)
+                recyclerView.scrollToLastItem(400)
             }.setNegativeButton(R.string.cancel, null)
             .show()
     }

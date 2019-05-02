@@ -11,6 +11,7 @@ import kotlinx.android.synthetic.main.view_recyclerview.*
 import tw.lifehackers.bghelper.App
 import tw.lifehackers.bghelper.R
 import tw.lifehackers.bghelper.model.Court
+import tw.lifehackers.bghelper.util.scrollToLastItem
 
 class MatchesFragment : Fragment(), CourtAdapter.Listener {
 
@@ -35,5 +36,6 @@ class MatchesFragment : Fragment(), CourtAdapter.Listener {
         val courts = App.gameStates.courts
         courts.add(Court())
         adapter.notifyItemInserted(courts.size - 1)
+        recyclerView.scrollToLastItem(400)
     }
 }
