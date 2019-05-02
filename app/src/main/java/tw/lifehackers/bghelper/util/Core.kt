@@ -1,8 +1,10 @@
 package tw.lifehackers.bghelper.util
 
+import android.app.Application
 import android.content.Context
 import android.util.Log
 import android.view.View
+import android.os.Process
 import androidx.appcompat.app.AlertDialog
 import tw.lifehackers.bghelper.App
 import tw.lifehackers.bghelper.R
@@ -26,4 +28,8 @@ fun warn(context: Context, title: String?, description: String?) {
     }
 
     builder.show()
+}
+
+fun finishApp() {
+    Process.killProcess(Process.myPid())
 }

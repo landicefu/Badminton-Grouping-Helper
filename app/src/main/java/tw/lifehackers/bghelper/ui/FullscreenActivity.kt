@@ -8,6 +8,7 @@ import kotlinx.android.synthetic.main.activity_fullscreen.*
 import tw.lifehackers.bghelper.R
 import tw.lifehackers.bghelper.ui.matches.MatchesFragment
 import tw.lifehackers.bghelper.ui.players.PlayerListFragment
+import tw.lifehackers.bghelper.util.finishApp
 
 class FullscreenActivity : AppCompatActivity(), View.OnClickListener {
 
@@ -42,7 +43,7 @@ class FullscreenActivity : AppCompatActivity(), View.OnClickListener {
 
         val currentTimeStamp = System.currentTimeMillis()
         if (currentTimeStamp - lastBackPressTimeStamp < APP_FINISH_THRESHOLD) {
-            finish()
+            finishApp()
         } else {
             lastBackPressTimeStamp = currentTimeStamp
             Toast.makeText(this, "Press back again to close app", Toast.LENGTH_SHORT).show()
@@ -58,7 +59,7 @@ class FullscreenActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     override fun onClick(v: View) {
-        when(v.id) {
+        when (v.id) {
             R.id.matchesButton -> {
                 supportFragmentManager
                     .beginTransaction()
