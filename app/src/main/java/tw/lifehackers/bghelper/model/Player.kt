@@ -10,4 +10,16 @@ data class Player(
     fun increaseNumTimesPlayed() {
         App.gameStates.numTimesPlayed[name] = getNumTimesPlayed() + 1
     }
+
+    fun isPlaying(): Boolean {
+        for (court in App.gameStates.courts) {
+            when (this) {
+                court.teamA?.player1 -> return true
+                court.teamA?.player2 -> return true
+                court.teamB?.player1 -> return true
+                court.teamB?.player2 -> return true
+            }
+        }
+        return false
+    }
 }

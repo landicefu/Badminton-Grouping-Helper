@@ -1,9 +1,11 @@
 package tw.lifehackers.bghelper.ui.players
 
+import android.content.Context
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import tw.lifehackers.bghelper.App
 import tw.lifehackers.bghelper.ui.matches.ButtonViewHolder
+import tw.lifehackers.bghelper.util.warn
 
 class PlayerAdapter(
     private val listener: Listener
@@ -14,12 +16,22 @@ class PlayerAdapter(
         private const val TYPE_ADD = 1
     }
 
+    private val deleteAction: (Int, Context) -> Unit = { position, context ->
+        val player = App.gameStates.getPlayerList()[position]
+        if (player.isPlaying()) {
+            warn(context, "Cannot remove", "The player cannot be removed while playing a game")
+        } else {
+            App.gameStates.removePlayer(player)
+            notifyItemRemoved(position)
+        }
+    }
+
     override fun getItemCount(): Int = App.gameStates.getPlayerList().size + 1
 
     override fun getItemViewType(position: Int): Int = if (position == App.gameStates.getPlayerList().size) TYPE_ADD else TYPE_PLAYER
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder = if (viewType == TYPE_PLAYER)
-        PlayerViewHolder(parent) else ButtonViewHolder(parent)
+        PlayerViewHolder(parent, deleteAction) else ButtonViewHolder(parent)
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when(holder) {
