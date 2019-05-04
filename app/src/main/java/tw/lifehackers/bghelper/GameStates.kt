@@ -3,10 +3,11 @@ package tw.lifehackers.bghelper
 import tw.lifehackers.bghelper.model.Court
 import tw.lifehackers.bghelper.model.Player
 import tw.lifehackers.bghelper.model.PlayerPair
+import tw.lifehackers.bghelper.model.PlayerPairAttributes
 
 class GameStates {
     private val playerList = mutableListOf<Player>()
-    private val playerPairList = mutableListOf<PlayerPair>()
+    private val playerPairMap = HashMap<PlayerPair, PlayerPairAttributes>()
 
     val numTimesPlayed = hashMapOf<String, Int>()
     val courts = mutableListOf<Court>()
@@ -15,9 +16,9 @@ class GameStates {
 
     fun removePlayer(player: Player) {
         playerList.remove(player)
-        val iterator = playerPairList.iterator()
+        val iterator = playerPairMap.iterator()
         while (iterator.hasNext()) {
-            val pair = iterator.next()
+            val pair = iterator.next().key
             if (pair.player1 == player || pair.player2 == player) {
                 iterator.remove()
             }
@@ -28,15 +29,22 @@ class GameStates {
         if (player in playerList) {
             return
         }
-
-        for (otherPlayer in playerList) {
-            playerPairList.add(PlayerPair.create(player, otherPlayer))
-        }
         playerList.add(player)
     }
 
     fun findPlayer(name: String): Player? =
         playerList.firstOrNull { player -> player.name == name }
+
+    fun getPlayerPairAttributes(playerPair: PlayerPair) = playerPairMap[playerPair]
+
+    fun getOrCreatePlayerPairAttributes(playerPair: PlayerPair): PlayerPairAttributes {
+        val existingAttr = playerPairMap[playerPair]
+        return if (existingAttr == null) {
+            val newAttr = PlayerPairAttributes()
+            playerPairMap[playerPair] = newAttr
+            newAttr
+        } else existingAttr
+    }
 
     fun getAvailablePlayers(): List<Player> = mutableListOf<Player>().apply {
         addAll(getPlayerList())

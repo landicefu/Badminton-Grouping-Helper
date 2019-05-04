@@ -13,7 +13,7 @@ import kotlinx.android.synthetic.main.view_recyclerview.*
 import tw.lifehackers.bghelper.App
 import tw.lifehackers.bghelper.R
 import tw.lifehackers.bghelper.model.Court
-import tw.lifehackers.bghelper.shuffle.GeneShuffler
+import tw.lifehackers.bghelper.Shuffler
 import tw.lifehackers.bghelper.util.scrollToLastItem
 import tw.lifehackers.bghelper.util.warn
 
@@ -78,17 +78,15 @@ class CourtsFragment : Fragment(), CourtAdapter.Listener {
         }
 
         val indexOfCourt = App.gameStates.courts.indexOf(court)
-        val matchSet = GeneShuffler.shuffle()
-        court.teamA = matchSet.teamA
-        court.teamB = matchSet.teamB
+        val match = Shuffler.shuffle()
+        court.startMatch(match)
         adapter.notifyItemChanged(indexOfCourt)
     }
 
     private fun finish(court: Court) {
         val index = court.index
         if (index != -1) {
-            court.teamA = null
-            court.teamB = null
+            court.reset()
             adapter.notifyItemChanged(index)
         }
     }

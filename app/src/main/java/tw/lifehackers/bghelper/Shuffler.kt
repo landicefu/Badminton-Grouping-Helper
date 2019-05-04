@@ -1,19 +1,17 @@
-package tw.lifehackers.bghelper.shuffle
+package tw.lifehackers.bghelper
 
-import tw.lifehackers.bghelper.App
-import tw.lifehackers.bghelper.BuildConfig
 import tw.lifehackers.bghelper.model.Player
 import tw.lifehackers.bghelper.model.Team
 import tw.lifehackers.bghelper.util.log
 import kotlin.math.absoluteValue
 import kotlin.random.Random
 
-class GeneShuffler {
+class Shuffler {
     companion object {
         private val debugLogging = BuildConfig.DEBUG
-        private const val totalRandomSet = 100
+        private const val totalRandomSet = 1000
 
-        fun shuffle(): MatchSet {
+        fun shuffle(): Match {
             val gameStates = App.gameStates
             val availablePlayers = gameStates.getAvailablePlayers()
 
@@ -25,12 +23,14 @@ class GeneShuffler {
                 dbg("-----------------------------------------")
             }
 
-            val randomSet = mutableSetOf<MatchSet>()
+            val randomSet = mutableSetOf<Match>()
             repeat(totalRandomSet) {
                 randomSet.add(createRandomMatchSet(availablePlayers))
             }
             dbg("Number of sets: ${randomSet.size}")
-            return randomSet.elementAt(0)
+            val selected = randomSet.sortedBy { matchSet -> matchSet.currentScore }.last()
+            dbg("Selected match: $selected, score: ${selected.currentScore}")
+            return selected
         }
 
         private fun dbg(str: String) {
@@ -41,32 +41,40 @@ class GeneShuffler {
             log("[Shuffle] $str")
         }
 
-        private fun createRandomMatchSet(availablePlayers: List<Player>): MatchSet = mutableListOf<Player>()
+        private fun createRandomMatchSet(availablePlayers: List<Player>): Match = mutableListOf<Player>()
             .apply { addAll(availablePlayers) }
             .run {
                 val teamA = Team.create(getRandomAndRemove(), getRandomAndRemove())
                 val teamB = Team.create(getRandomAndRemove(), getRandomAndRemove())
-                return MatchSet.create(teamA, teamB)
+                return Match.create(teamA, teamB)
             }
     }
 
-    data class MatchSet private constructor(
+    data class Match private constructor(
         val teamA: Team,
         val teamB: Team
     ) {
+
         companion object {
-            fun create(teamX: Team, teamY: Team): MatchSet {
+            fun create(teamX: Team, teamY: Team): Match {
                 if (hashSetOf(teamX.player1, teamX.player2, teamY.player1, teamY.player2).size != 4) {
-                    throw IllegalArgumentException("duplicate player in a MatchSet")
+                    throw IllegalArgumentException("duplicate player in a Match")
                 }
 
                 return if (teamX.player1.name < teamY.player1.name) {
-                    MatchSet(teamX, teamY)
+                    Match(teamX, teamY)
                 } else {
-                    MatchSet(teamY, teamX)
+                    Match(teamY, teamX)
                 }
             }
         }
+
+        val currentScore by lazy { calculateScore() }
+
+        private fun calculateScore(): Int {
+            return Random.nextInt() % 10
+        }
+
     }
 }
 
