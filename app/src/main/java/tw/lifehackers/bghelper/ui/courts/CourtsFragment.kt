@@ -1,4 +1,4 @@
-package tw.lifehackers.bghelper.ui.matches
+package tw.lifehackers.bghelper.ui.courts
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -15,8 +15,8 @@ import tw.lifehackers.bghelper.R
 import tw.lifehackers.bghelper.model.Court
 import tw.lifehackers.bghelper.util.scrollToLastItem
 
-class MatchesFragment : Fragment(), CourtAdapter.Listener {
-    private val adapter = CourtAdapter(this@MatchesFragment)
+class CourtsFragment : Fragment(), CourtAdapter.Listener {
+    private val adapter = CourtAdapter(this@CourtsFragment)
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.view_recyclerview, container, false)
@@ -28,7 +28,7 @@ class MatchesFragment : Fragment(), CourtAdapter.Listener {
 
     private fun initUI() {
         recyclerView.apply {
-            adapter = this@MatchesFragment.adapter
+            adapter = this@CourtsFragment.adapter
             layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
         }
     }

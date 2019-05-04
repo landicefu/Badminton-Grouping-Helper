@@ -4,7 +4,7 @@ import android.content.Context
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import tw.lifehackers.bghelper.App
-import tw.lifehackers.bghelper.ui.matches.ButtonViewHolder
+import tw.lifehackers.bghelper.ui.courts.ButtonViewHolder
 import tw.lifehackers.bghelper.util.warn
 
 class PlayerAdapter(

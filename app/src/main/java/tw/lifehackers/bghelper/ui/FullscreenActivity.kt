@@ -6,7 +6,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_fullscreen.*
 import tw.lifehackers.bghelper.R
-import tw.lifehackers.bghelper.ui.matches.MatchesFragment
+import tw.lifehackers.bghelper.ui.courts.CourtsFragment
 import tw.lifehackers.bghelper.ui.players.PlayerListFragment
 import tw.lifehackers.bghelper.util.finishApp
 
@@ -63,7 +63,7 @@ class FullscreenActivity : AppCompatActivity(), View.OnClickListener {
             R.id.matchesButton -> {
                 supportFragmentManager
                     .beginTransaction()
-                    .replace(R.id.mainContainer, MatchesFragment())
+                    .replace(R.id.mainContainer, CourtsFragment())
                     .addToBackStack(null)
                     .commitAllowingStateLoss()
             }

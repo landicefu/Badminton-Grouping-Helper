@@ -1,4 +1,4 @@
-package tw.lifehackers.bghelper.ui.matches
+package tw.lifehackers.bghelper.ui.courts
 
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
