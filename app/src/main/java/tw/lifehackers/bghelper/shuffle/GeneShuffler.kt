@@ -1,39 +1,53 @@
 package tw.lifehackers.bghelper.shuffle
 
 import tw.lifehackers.bghelper.App
-import tw.lifehackers.bghelper.model.Court
+import tw.lifehackers.bghelper.BuildConfig
+import tw.lifehackers.bghelper.model.Player
 import tw.lifehackers.bghelper.model.Team
 import tw.lifehackers.bghelper.util.log
+import kotlin.math.absoluteValue
+import kotlin.random.Random
 
 class GeneShuffler {
     companion object {
-        private const val debugLogging = true
+        private val debugLogging = BuildConfig.DEBUG
         private const val totalRandomSet = 100
 
-        fun shuffle(court: Court): MatchSet {
+        fun shuffle(): MatchSet {
             val gameStates = App.gameStates
-            val allAvailablePlayers = gameStates.getAvailablePlayers()
+            val availablePlayers = gameStates.getAvailablePlayers()
 
             if (debugLogging) {
                 dbg("--------- All Available Players ---------")
-                allAvailablePlayers.forEachIndexed { index, player ->
+                availablePlayers.forEachIndexed { index, player ->
                     dbg("$index - ${player.name}")
                 }
+                dbg("-----------------------------------------")
             }
 
-//            val randomSet = mutableSetOf<MatchSet>()
-            val teamA = Team.create(allAvailablePlayers[0], allAvailablePlayers[1])
-            val teamB = Team.create(allAvailablePlayers[2], allAvailablePlayers[3])
-            return MatchSet.create(teamA, teamB)
+            val randomSet = mutableSetOf<MatchSet>()
+            repeat(totalRandomSet) {
+                randomSet.add(createRandomMatchSet(availablePlayers))
+            }
+            dbg("Number of sets: ${randomSet.size}")
+            return randomSet.elementAt(0)
         }
 
-        fun dbg(str: String) {
+        private fun dbg(str: String) {
             if (!debugLogging) {
                 return
             }
 
             log("[Shuffle] $str")
         }
+
+        private fun createRandomMatchSet(availablePlayers: List<Player>): MatchSet = mutableListOf<Player>()
+            .apply { addAll(availablePlayers) }
+            .run {
+                val teamA = Team.create(getRandomAndRemove(), getRandomAndRemove())
+                val teamB = Team.create(getRandomAndRemove(), getRandomAndRemove())
+                return MatchSet.create(teamA, teamB)
+            }
     }
 
     data class MatchSet private constructor(
@@ -54,4 +68,15 @@ class GeneShuffler {
             }
         }
     }
+}
+
+private fun <E> Collection<E>.getRandom(): E {
+    val index = Random.nextInt().absoluteValue % size
+    return elementAt(index)
+}
+
+private fun <E> MutableCollection<E>.getRandomAndRemove(): E {
+    val value = getRandom()
+    remove(value)
+    return value
 }

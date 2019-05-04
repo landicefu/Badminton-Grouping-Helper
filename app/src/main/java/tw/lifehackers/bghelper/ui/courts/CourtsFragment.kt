@@ -78,7 +78,7 @@ class CourtsFragment : Fragment(), CourtAdapter.Listener {
         }
 
         val indexOfCourt = App.gameStates.courts.indexOf(court)
-        val matchSet = GeneShuffler.shuffle(court)
+        val matchSet = GeneShuffler.shuffle()
         court.teamA = matchSet.teamA
         court.teamB = matchSet.teamB
         adapter.notifyItemChanged(indexOfCourt)
