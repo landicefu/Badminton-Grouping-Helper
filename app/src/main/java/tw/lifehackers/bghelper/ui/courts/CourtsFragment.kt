@@ -13,7 +13,9 @@ import kotlinx.android.synthetic.main.view_recyclerview.*
 import tw.lifehackers.bghelper.App
 import tw.lifehackers.bghelper.R
 import tw.lifehackers.bghelper.model.Court
+import tw.lifehackers.bghelper.shuffle.GeneShuffler
 import tw.lifehackers.bghelper.util.scrollToLastItem
+import tw.lifehackers.bghelper.util.warn
 
 class CourtsFragment : Fragment(), CourtAdapter.Listener {
     private val adapter = CourtAdapter(this@CourtsFragment)
@@ -69,6 +71,17 @@ class CourtsFragment : Fragment(), CourtAdapter.Listener {
     }
 
     private fun shuffle(court: Court) {
+        val context = context ?: return
+        if (App.gameStates.getAvailablePlayers().size < 4) {
+            warn(context, "Cannot start game", "Number of available player is less than four")
+            return
+        }
+
+        val indexOfCourt = App.gameStates.courts.indexOf(court)
+        val matchSet = GeneShuffler.shuffle(court)
+        court.teamA = matchSet.teamA
+        court.teamB = matchSet.teamB
+        adapter.notifyItemChanged(indexOfCourt)
     }
 
     private fun finish(court: Court) {

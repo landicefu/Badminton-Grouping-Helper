@@ -37,4 +37,16 @@ class GameStates {
 
     fun findPlayer(name: String): Player? =
         playerList.firstOrNull { player -> player.name == name }
+
+    fun getAvailablePlayers(): List<Player> = mutableListOf<Player>().apply {
+        addAll(getPlayerList())
+        for (c in courts) {
+            if (c.isPlaying()) {
+                remove(c.teamA?.player1)
+                remove(c.teamA?.player2)
+                remove(c.teamB?.player1)
+                remove(c.teamB?.player2)
+            }
+        }
+    }.toList()
 }
