@@ -1,34 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:paddingBottom="16dp">
+
+    <TextView
+            android:id="@+id/menuTitle"
+            style="@style/BottomSheetTitleStyle"
+            tools:text="Court 1" />
 
     <TextView
             android:id="@+id/buttonShuffleOrFinish"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingBottom="4dp"
-            android:paddingTop="4dp"
-            android:text="@string/shuffle"
-            android:textSize="24sp" />
-
-    <View
-            android:id="@+id/separator"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginRight="8dp"
-            android:background="@color/lightGray" />
+            style="@style/BottomSheetButtonStyle"
+            android:text="@string/shuffle" />
 
     <TextView
             android:id="@+id/buttonRemoveCourt"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingBottom="4dp"
-            android:paddingTop="4dp"
-            android:text="@string/menu_remove_court"
-            android:textSize="24sp" />
+            style="@style/BottomSheetButtonStyle"
+            android:text="@string/menu_remove_court" />
 
 </LinearLayout>

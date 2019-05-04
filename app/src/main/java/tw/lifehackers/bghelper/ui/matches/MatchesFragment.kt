@@ -1,7 +1,6 @@
 package tw.lifehackers.bghelper.ui.matches
 
 import android.os.Bundle
-import android.system.Os.remove
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,7 +14,6 @@ import tw.lifehackers.bghelper.App
 import tw.lifehackers.bghelper.R
 import tw.lifehackers.bghelper.model.Court
 import tw.lifehackers.bghelper.util.scrollToLastItem
-import tw.lifehackers.bghelper.util.warn
 
 class MatchesFragment : Fragment(), CourtAdapter.Listener {
     private val adapter = CourtAdapter(this@MatchesFragment)
@@ -48,6 +46,7 @@ class MatchesFragment : Fragment(), CourtAdapter.Listener {
         BottomSheetDialog(context).apply {
             val view = LayoutInflater.from(context).inflate(R.layout.bottom_menu_court, null, false)
             view.apply {
+                menuTitle.text = context.getString(R.string.court_name, court.index)
                 buttonShuffleOrFinish.text = context.getString(if (playing) R.string.finish else R.string.shuffle)
                 buttonShuffleOrFinish.setOnClickListener {
                     if (playing) {
@@ -58,9 +57,7 @@ class MatchesFragment : Fragment(), CourtAdapter.Listener {
                     dismiss()
                 }
 
-                val removeVisibility = if (playing) View.GONE else View.VISIBLE
-                separator.visibility = removeVisibility
-                buttonRemoveCourt.visibility = removeVisibility
+                buttonRemoveCourt.visibility = if (playing) View.GONE else View.VISIBLE
                 buttonRemoveCourt.setOnClickListener {
                     remove(court)
                     dismiss()
@@ -88,5 +85,10 @@ class MatchesFragment : Fragment(), CourtAdapter.Listener {
         val position = courts.indexOf(court)
         courts.remove(court)
         adapter.notifyItemRemoved(position)
+
+        val lastCourtIndex = courts.size
+        if (position <= lastCourtIndex) {
+            adapter.notifyItemRangeChanged(position, lastCourtIndex)
+        }
     }
 }

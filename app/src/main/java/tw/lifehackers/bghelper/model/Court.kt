@@ -2,7 +2,7 @@ package tw.lifehackers.bghelper.model
 
 import tw.lifehackers.bghelper.App
 
-data class Court(
+class Court(
     var teamA: Team? = null,
     var teamB: Team? = null
 ) {
@@ -15,4 +15,7 @@ data class Court(
             teamB?.player1 != null && teamB?.player2 != null
 
     val index: Int get() = App.gameStates.courts.indexOf(this)
+
+    override fun equals(other: Any?): Boolean = this === other
+
 }
