@@ -14,7 +14,7 @@
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
             android:layout_marginTop="8dp"
-            android:background="@color/court_ground"
+            android:background="@color/courtGround"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintDimensionRatio="H,44:20"
             app:layout_constraintBottom_toBottomOf="parent" />

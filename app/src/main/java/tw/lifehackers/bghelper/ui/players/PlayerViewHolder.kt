@@ -19,7 +19,7 @@ class PlayerViewHolder(parent: ViewGroup, val deleteAction: (Int, Context) -> Un
     LayoutInflater.from(parent.context).inflate(R.layout.item_player, parent, false)
 ) {
 
-    private val green: Int = ContextCompat.getColor(itemView.context, R.color.court_ground)
+    private val green: Int = ContextCompat.getColor(itemView.context, R.color.courtGround)
     private val gray: Int = ContextCompat.getColor(itemView.context, R.color.blackOverlay)
 
     init {

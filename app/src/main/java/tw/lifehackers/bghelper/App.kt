@@ -3,8 +3,6 @@ package tw.lifehackers.bghelper
 import android.app.Application
 import tw.lifehackers.bghelper.model.Court
 import tw.lifehackers.bghelper.model.Player
-import tw.lifehackers.bghelper.model.PlayerPair
-import tw.lifehackers.bghelper.model.Team
 
 class App : Application() {
 

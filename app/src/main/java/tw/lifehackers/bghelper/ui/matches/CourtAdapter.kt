@@ -25,9 +25,9 @@ class CourtAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder = when (viewType) {
-        ITEM_TYPE_COURT -> CourtViewHolder(parent)
+        ITEM_TYPE_COURT -> CourtViewHolder(parent) { position -> listener.onClick(App.gameStates.courts[position]) }
         ITEM_TYPE_ADD_COURT -> ButtonViewHolder(parent)
-        else -> CourtViewHolder(parent)
+        else -> CourtViewHolder(parent) { position -> listener.onClick(App.gameStates.courts[position]) }
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
@@ -39,5 +39,6 @@ class CourtAdapter(
 
     interface Listener {
         fun addCourt()
+        fun onClick(court: Court)
     }
 }

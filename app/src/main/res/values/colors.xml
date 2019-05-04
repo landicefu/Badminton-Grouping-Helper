@@ -11,5 +11,6 @@
     <color name="blackOverlay">#66000000</color>
     <color name="blackOverlayLight">#33000000</color>
 
-    <color name="court_ground">#40AE4F</color>
+    <color name="courtGround">#40AE4F</color>
+    <color name="lightGray">#DDDDDD</color>
 </resources>

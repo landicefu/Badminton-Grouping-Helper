@@ -10,4 +10,7 @@
     <string name="newUserTitle">Enter the name of the user</string>
     <string name="ok">OK</string>
     <string name="cancel">CANCEL</string>
+    <string name="menu_remove_court">Remove Court</string>
+    <string name="shuffle">Shuffle</string>
+    <string name="finish">Finish</string>
 </resources>
