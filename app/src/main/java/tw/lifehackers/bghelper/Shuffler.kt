@@ -1,5 +1,7 @@
 package tw.lifehackers.bghelper
 
+import tw.lifehackers.bghelper.CalculationParameter.Companion.POWER_NUM_TIME_PLAYED
+import tw.lifehackers.bghelper.CalculationParameter.Companion.SCORE_BASE_NUM_TIME_PLAYED
 import tw.lifehackers.bghelper.model.Player
 import tw.lifehackers.bghelper.model.Team
 import tw.lifehackers.bghelper.util.log
@@ -28,8 +30,9 @@ class Shuffler {
                 randomSet.add(createRandomMatchSet(availablePlayers))
             }
             dbg("Number of sets: ${randomSet.size}")
-            val selected = randomSet.sortedBy { matchSet -> matchSet.currentScore }.last()
-            dbg("Selected match: $selected, score: ${selected.currentScore}")
+            val fact = GameStatesFact.create()
+            val selected = randomSet.sortedBy { matchSet -> matchSet.getScore(fact) }.last()
+            dbg("Selected match: $selected, score: ${selected.getScore(fact)}")
             return selected
         }
 
@@ -69,12 +72,42 @@ class Shuffler {
             }
         }
 
-        val currentScore by lazy { calculateScore() }
+        private var score: Int? = null
 
-        private fun calculateScore(): Int {
-            return Random.nextInt() % 10
+        fun getScore(gameStatesFact: GameStatesFact): Int = score ?: calculateScore(gameStatesFact).let { calculationResult ->
+            this@Match.score = calculationResult
+            calculationResult
         }
 
+        private fun calculateScore(gameStatesFact: GameStatesFact): Int {
+            var score = 0
+            score += (gameStatesFact.highNumberOfPlayedGames - teamA.player1.getNumTimesPlayed()).times(SCORE_BASE_NUM_TIME_PLAYED).power(POWER_NUM_TIME_PLAYED)
+            score += (gameStatesFact.highNumberOfPlayedGames - teamA.player2.getNumTimesPlayed()).times(SCORE_BASE_NUM_TIME_PLAYED).power(POWER_NUM_TIME_PLAYED)
+            score += (gameStatesFact.highNumberOfPlayedGames - teamB.player1.getNumTimesPlayed()).times(SCORE_BASE_NUM_TIME_PLAYED).power(POWER_NUM_TIME_PLAYED)
+            score += (gameStatesFact.highNumberOfPlayedGames - teamB.player2.getNumTimesPlayed()).times(SCORE_BASE_NUM_TIME_PLAYED).power(POWER_NUM_TIME_PLAYED)
+            return score
+        }
+    }
+}
+
+private fun Int.power(power: Int): Int = Math.pow(this.toDouble(), power.toDouble()).toInt()
+
+class CalculationParameter {
+    companion object {
+        const val SCORE_BASE_NUM_TIME_PLAYED = 2
+        const val POWER_NUM_TIME_PLAYED = 2
+    }
+}
+
+data class GameStatesFact private constructor(
+    val highNumberOfPlayedGames: Int
+) {
+    companion object {
+        fun create(): GameStatesFact {
+            val gameStates = App.gameStates
+            val highNumberOfPlayedGames = gameStates.getPlayerList().map { player -> player.getNumTimesPlayed() }.max() ?: 0
+            return GameStatesFact(highNumberOfPlayedGames)
+        }
     }
 }
 

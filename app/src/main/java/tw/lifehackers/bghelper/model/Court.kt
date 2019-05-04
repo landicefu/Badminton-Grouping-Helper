@@ -24,6 +24,10 @@ class Court {
         val gameStates = App.gameStates
         teamA = match.teamA
         teamB = match.teamB
+        match.teamA.player1.increaseNumTimesPlayed()
+        match.teamA.player2.increaseNumTimesPlayed()
+        match.teamB.player1.increaseNumTimesPlayed()
+        match.teamB.player2.increaseNumTimesPlayed()
         gameStates.getOrCreatePlayerPairAttributes(match.teamA.toPlayerPair()).numTeamUp++
         gameStates.getOrCreatePlayerPairAttributes(match.teamB.toPlayerPair()).numTeamUp++
         gameStates.getOrCreatePlayerPairAttributes(PlayerPair.create(match.teamA.player1, match.teamB.player1)).numOppose++
