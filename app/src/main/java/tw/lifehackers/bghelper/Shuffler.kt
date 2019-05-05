@@ -1,11 +1,15 @@
 package tw.lifehackers.bghelper
 
+import tw.lifehackers.bghelper.CalculationParameter.Companion.MINUS_WEIGHTING_OPPOSE
+import tw.lifehackers.bghelper.CalculationParameter.Companion.MINUS_WEIGHTING_SAME_TEAM
 import tw.lifehackers.bghelper.CalculationParameter.Companion.POWER_NUM_TIME_PLAYED
 import tw.lifehackers.bghelper.CalculationParameter.Companion.SCORE_BASE_NUM_TIME_PLAYED
 import tw.lifehackers.bghelper.model.Player
+import tw.lifehackers.bghelper.model.PlayerPair
 import tw.lifehackers.bghelper.model.Team
 import tw.lifehackers.bghelper.util.log
 import kotlin.math.absoluteValue
+import kotlin.math.roundToInt
 import kotlin.random.Random
 
 class Shuffler {
@@ -18,7 +22,7 @@ class Shuffler {
             val availablePlayers = gameStates.getAvailablePlayers()
 
             if (debugLogging) {
-                dbg("--------- All Available Players ---------")
+                dbg("--------+ All Available Players +--------")
                 availablePlayers.forEachIndexed { index, player ->
                     dbg("$index - ${player.name}")
                 }
@@ -31,6 +35,15 @@ class Shuffler {
             }
             dbg("Number of sets: ${randomSet.size}")
             val fact = GameStatesFact.create()
+            val sortedList = randomSet.sortedBy { matchSet -> matchSet.getScore(fact) }
+            if (debugLogging) {
+                dbg("-----------+ Top Ten Match +-------------")
+                sortedList
+                    .subList(sortedList.size - 10, sortedList.size)
+                    .reversed()
+                    .forEachIndexed { index, match -> dbg("[${index + 1}][${match.getScore(fact)}] $match") }
+                dbg("-----------------------------------------")
+            }
             val selected = randomSet.sortedBy { matchSet -> matchSet.getScore(fact) }.last()
             dbg("Selected match: $selected, score: ${selected.getScore(fact)}")
             return selected
@@ -80,22 +93,31 @@ class Shuffler {
         }
 
         private fun calculateScore(gameStatesFact: GameStatesFact): Int {
-            var score = 0
-            score += (gameStatesFact.highNumberOfPlayedGames - teamA.player1.getNumTimesPlayed()).times(SCORE_BASE_NUM_TIME_PLAYED).power(POWER_NUM_TIME_PLAYED)
-            score += (gameStatesFact.highNumberOfPlayedGames - teamA.player2.getNumTimesPlayed()).times(SCORE_BASE_NUM_TIME_PLAYED).power(POWER_NUM_TIME_PLAYED)
-            score += (gameStatesFact.highNumberOfPlayedGames - teamB.player1.getNumTimesPlayed()).times(SCORE_BASE_NUM_TIME_PLAYED).power(POWER_NUM_TIME_PLAYED)
-            score += (gameStatesFact.highNumberOfPlayedGames - teamB.player2.getNumTimesPlayed()).times(SCORE_BASE_NUM_TIME_PLAYED).power(POWER_NUM_TIME_PLAYED)
-            return score
+            var score = 0.0
+            score += (gameStatesFact.highNumberOfPlayedGames - teamA.player1.getNumTimesPlayed()).toDouble().times(SCORE_BASE_NUM_TIME_PLAYED).power(POWER_NUM_TIME_PLAYED)
+            score += (gameStatesFact.highNumberOfPlayedGames - teamA.player2.getNumTimesPlayed()).toDouble().times(SCORE_BASE_NUM_TIME_PLAYED).power(POWER_NUM_TIME_PLAYED)
+            score += (gameStatesFact.highNumberOfPlayedGames - teamB.player1.getNumTimesPlayed()).toDouble().times(SCORE_BASE_NUM_TIME_PLAYED).power(POWER_NUM_TIME_PLAYED)
+            score += (gameStatesFact.highNumberOfPlayedGames - teamB.player2.getNumTimesPlayed()).toDouble().times(SCORE_BASE_NUM_TIME_PLAYED).power(POWER_NUM_TIME_PLAYED)
+            score -= App.gameStates.getPlayerPairAttributes(teamA.toPlayerPair())?.numTeamUp?.toDouble()?.times(MINUS_WEIGHTING_SAME_TEAM) ?: 0.0
+            score -= App.gameStates.getPlayerPairAttributes(teamB.toPlayerPair())?.numTeamUp?.toDouble()?.times(MINUS_WEIGHTING_SAME_TEAM) ?: 0.0
+            score -= App.gameStates.getPlayerPairAttributes(PlayerPair.create(teamA.player1, teamB.player1))?.numOppose?.toDouble()?.times(MINUS_WEIGHTING_OPPOSE) ?: 0.0
+            score -= App.gameStates.getPlayerPairAttributes(PlayerPair.create(teamA.player1, teamB.player2))?.numOppose?.toDouble()?.times(MINUS_WEIGHTING_OPPOSE) ?: 0.0
+            score -= App.gameStates.getPlayerPairAttributes(PlayerPair.create(teamA.player2, teamB.player1))?.numOppose?.toDouble()?.times(MINUS_WEIGHTING_OPPOSE) ?: 0.0
+            score -= App.gameStates.getPlayerPairAttributes(PlayerPair.create(teamA.player2, teamB.player2))?.numOppose?.toDouble()?.times(MINUS_WEIGHTING_OPPOSE) ?: 0.0
+            return score.roundToInt()
         }
     }
 }
 
-private fun Int.power(power: Int): Int = Math.pow(this.toDouble(), power.toDouble()).toInt()
+private fun Double.power(power: Double): Double = Math.pow(this, power)
+private fun Double.power(power: Int): Double = Math.pow(this, power.toDouble())
 
 class CalculationParameter {
     companion object {
         const val SCORE_BASE_NUM_TIME_PLAYED = 2
         const val POWER_NUM_TIME_PLAYED = 2
+        const val MINUS_WEIGHTING_SAME_TEAM = 0.5
+        const val MINUS_WEIGHTING_OPPOSE = 1
     }
 }
 
