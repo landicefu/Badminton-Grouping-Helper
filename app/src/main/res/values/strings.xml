@@ -14,4 +14,5 @@
     <string name="shuffle">Shuffle</string>
     <string name="finish">Finish</string>
     <string name="court_name">Court %d</string>
+    <string name="finishAndStartNext">Finish And Start Next</string>
 </resources>

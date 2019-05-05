@@ -58,7 +58,13 @@ class CourtsFragment : Fragment(), CourtAdapter.Listener {
                     }
                     dismiss()
                 }
+                buttonFinishAndStartNext.setOnClickListener {
+                    finish(court)
+                    shuffle(court)
+                    dismiss()
+                }
 
+                buttonFinishAndStartNext.visibility = if (playing) View.VISIBLE else View.GONE
                 buttonRemoveCourt.visibility = if (playing) View.GONE else View.VISIBLE
                 buttonRemoveCourt.setOnClickListener {
                     remove(court)

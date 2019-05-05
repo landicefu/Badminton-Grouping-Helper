@@ -18,6 +18,11 @@
             android:text="@string/shuffle" />
 
     <TextView
+            android:id="@+id/buttonFinishAndStartNext"
+            style="@style/BottomSheetButtonStyle"
+            android:text="@string/finishAndStartNext" />
+
+    <TextView
             android:id="@+id/buttonRemoveCourt"
             style="@style/BottomSheetButtonStyle"
             android:text="@string/menu_remove_court" />
