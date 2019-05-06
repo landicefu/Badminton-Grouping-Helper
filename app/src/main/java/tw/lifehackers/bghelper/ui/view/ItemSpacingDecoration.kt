@@ -1,4 +1,4 @@
-package tw.lifehackers.bghelper.util
+package tw.lifehackers.bghelper.ui.view
 
 import android.graphics.Rect
 import androidx.recyclerview.widget.RecyclerView

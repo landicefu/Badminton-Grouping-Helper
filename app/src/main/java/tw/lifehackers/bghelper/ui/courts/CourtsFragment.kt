@@ -14,10 +14,12 @@ import tw.lifehackers.bghelper.App
 import tw.lifehackers.bghelper.R
 import tw.lifehackers.bghelper.model.Court
 import tw.lifehackers.bghelper.Shuffler
+import tw.lifehackers.bghelper.ui.view.ItemSpacingDecoration
 import tw.lifehackers.bghelper.util.scrollToLastItem
 import tw.lifehackers.bghelper.util.warn
 
 class CourtsFragment : Fragment(), CourtAdapter.Listener {
+
     private val adapter = CourtAdapter(this@CourtsFragment)
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -32,6 +34,7 @@ class CourtsFragment : Fragment(), CourtAdapter.Listener {
         recyclerView.apply {
             adapter = this@CourtsFragment.adapter
             layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
+            addItemDecoration(ItemSpacingDecoration(R.dimen.xlarge, null, R.dimen.xlarge, true))
         }
     }
 
@@ -39,6 +42,7 @@ class CourtsFragment : Fragment(), CourtAdapter.Listener {
         val courts = App.gameStates.courts
         courts.add(Court())
         adapter.notifyItemInserted(courts.size - 1)
+        adapter.refreshButtonStatus()
         recyclerView.scrollToLastItem(400)
     }
 
@@ -87,6 +91,7 @@ class CourtsFragment : Fragment(), CourtAdapter.Listener {
         val match = Shuffler.shuffle()
         court.startMatch(match)
         adapter.notifyItemChanged(indexOfCourt)
+        adapter.refreshButtonStatus()
     }
 
     private fun finish(court: Court) {
@@ -95,6 +100,7 @@ class CourtsFragment : Fragment(), CourtAdapter.Listener {
             court.reset()
             adapter.notifyItemChanged(index)
         }
+        adapter.refreshButtonStatus()
     }
 
     private fun remove(court: Court) {
@@ -107,5 +113,24 @@ class CourtsFragment : Fragment(), CourtAdapter.Listener {
         if (position <= lastCourtIndex) {
             adapter.notifyItemRangeChanged(position, lastCourtIndex)
         }
+        adapter.refreshButtonStatus()
+    }
+
+    override fun startAllGames() {
+        App.gameStates.courts.forEach { court ->
+            if (!court.isPlaying()) {
+                shuffle(court)
+            }
+        }
+        adapter.refreshButtonStatus()
+    }
+
+    override fun finishAllGames() {
+        App.gameStates.courts.forEach { court ->
+            if (court.isPlaying()) {
+                finish(court)
+            }
+        }
+        adapter.refreshButtonStatus()
     }
 }

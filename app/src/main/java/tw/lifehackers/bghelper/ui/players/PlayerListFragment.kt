@@ -13,7 +13,7 @@ import kotlinx.android.synthetic.main.view_recyclerview.*
 import tw.lifehackers.bghelper.App
 import tw.lifehackers.bghelper.R
 import tw.lifehackers.bghelper.model.Player
-import tw.lifehackers.bghelper.util.ItemSpacingDecoration
+import tw.lifehackers.bghelper.ui.view.ItemSpacingDecoration
 import tw.lifehackers.bghelper.util.scrollToLastItem
 import tw.lifehackers.bghelper.util.warn
 
@@ -27,7 +27,14 @@ class PlayerListFragment : Fragment(), PlayerAdapter.Listener {
         recyclerView.apply {
             adapter = playerAdapter
             layoutManager = LinearLayoutManager(view.context, RecyclerView.VERTICAL, false)
-            addItemDecoration(ItemSpacingDecoration(R.dimen.large, R.dimen.large, null, true))
+            addItemDecoration(
+                ItemSpacingDecoration(
+                    R.dimen.large,
+                    R.dimen.large,
+                    null,
+                    true
+                )
+            )
         }
     }
 
