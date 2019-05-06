@@ -1,6 +1,7 @@
 package tw.lifehackers.bghelper.ui.courts
 
 import android.os.Bundle
+import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -21,6 +22,7 @@ import tw.lifehackers.bghelper.util.warn
 class CourtsFragment : Fragment(), CourtAdapter.Listener {
 
     private val adapter = CourtAdapter(this@CourtsFragment)
+    private val refreshHandler = Handler()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.view_recyclerview, container, false)
@@ -36,13 +38,14 @@ class CourtsFragment : Fragment(), CourtAdapter.Listener {
             layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
             addItemDecoration(ItemSpacingDecoration(R.dimen.xlarge, null, R.dimen.xlarge, true))
         }
+        refreshButtonStatus()
     }
 
     override fun addCourt() {
         val courts = App.gameStates.courts
         courts.add(Court())
         adapter.notifyItemInserted(courts.size - 1)
-        adapter.refreshButtonStatus()
+        refreshButtonStatus()
         recyclerView.scrollToLastItem(400)
     }
 
@@ -91,7 +94,7 @@ class CourtsFragment : Fragment(), CourtAdapter.Listener {
         val match = Shuffler.shuffle()
         court.startMatch(match)
         adapter.notifyItemChanged(indexOfCourt)
-        adapter.refreshButtonStatus()
+        refreshButtonStatus()
     }
 
     private fun finish(court: Court) {
@@ -100,7 +103,7 @@ class CourtsFragment : Fragment(), CourtAdapter.Listener {
             court.reset()
             adapter.notifyItemChanged(index)
         }
-        adapter.refreshButtonStatus()
+        refreshButtonStatus()
     }
 
     private fun remove(court: Court) {
@@ -113,7 +116,7 @@ class CourtsFragment : Fragment(), CourtAdapter.Listener {
         if (position <= lastCourtIndex) {
             adapter.notifyItemRangeChanged(position, lastCourtIndex)
         }
-        adapter.refreshButtonStatus()
+        refreshButtonStatus()
     }
 
     override fun startAllGames() {
@@ -122,7 +125,7 @@ class CourtsFragment : Fragment(), CourtAdapter.Listener {
                 shuffle(court)
             }
         }
-        adapter.refreshButtonStatus()
+        refreshButtonStatus()
     }
 
     override fun finishAllGames() {
@@ -131,6 +134,14 @@ class CourtsFragment : Fragment(), CourtAdapter.Listener {
                 finish(court)
             }
         }
+    }
+
+    private val refreshRunnable = Runnable {
         adapter.refreshButtonStatus()
+    }
+
+    private fun refreshButtonStatus() {
+        refreshHandler.removeCallbacks(refreshRunnable)
+        refreshHandler.postDelayed(refreshRunnable, 100)
     }
 }
