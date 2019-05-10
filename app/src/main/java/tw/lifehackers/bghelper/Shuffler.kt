@@ -35,16 +35,16 @@ class Shuffler {
             }
             dbg("Number of sets: ${randomSet.size}")
             val fact = GameStatesFact.create()
-            val sortedList = randomSet.sortedBy { matchSet -> matchSet.getScore(fact) }
+            val sortedList = randomSet.sortedBy { matchSet -> matchSet.getScore(fact) }.reversed()
             if (debugLogging) {
                 dbg("-----------+ Top Ten Match +-------------")
+                val sizeOr10 = Math.min(sortedList.size, 10)
                 sortedList
-                    .subList(sortedList.size - 10, sortedList.size)
-                    .reversed()
+                    .subList(0, sizeOr10)
                     .forEachIndexed { index, match -> dbg("[${index + 1}][${match.getScore(fact)}] $match") }
                 dbg("-----------------------------------------")
             }
-            val selected = randomSet.sortedBy { matchSet -> matchSet.getScore(fact) }.last()
+            val selected = sortedList.first()
             dbg("Selected match: $selected, score: ${selected.getScore(fact)}")
             return selected
         }
