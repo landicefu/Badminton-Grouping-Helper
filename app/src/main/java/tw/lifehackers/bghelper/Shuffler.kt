@@ -5,7 +5,6 @@ import tw.lifehackers.bghelper.CalculationParameter.Companion.MINUS_WEIGHTING_SA
 import tw.lifehackers.bghelper.CalculationParameter.Companion.POWER_NUM_TIME_PLAYED
 import tw.lifehackers.bghelper.CalculationParameter.Companion.SCORE_BASE_NUM_TIME_PLAYED
 import tw.lifehackers.bghelper.model.Player
-import tw.lifehackers.bghelper.model.PlayerPair
 import tw.lifehackers.bghelper.model.Team
 import tw.lifehackers.bghelper.util.log
 import kotlin.math.absoluteValue
@@ -98,12 +97,12 @@ class Shuffler {
             score += (gameStatesFact.highNumberOfPlayedGames - teamA.player2.getNumTimesPlayed()).toDouble().times(SCORE_BASE_NUM_TIME_PLAYED).power(POWER_NUM_TIME_PLAYED)
             score += (gameStatesFact.highNumberOfPlayedGames - teamB.player1.getNumTimesPlayed()).toDouble().times(SCORE_BASE_NUM_TIME_PLAYED).power(POWER_NUM_TIME_PLAYED)
             score += (gameStatesFact.highNumberOfPlayedGames - teamB.player2.getNumTimesPlayed()).toDouble().times(SCORE_BASE_NUM_TIME_PLAYED).power(POWER_NUM_TIME_PLAYED)
-            score -= App.gameStates.getPlayerPairAttributes(teamA.toPlayerPair())?.numTeamUp?.toDouble()?.times(MINUS_WEIGHTING_SAME_TEAM) ?: 0.0
-            score -= App.gameStates.getPlayerPairAttributes(teamB.toPlayerPair())?.numTeamUp?.toDouble()?.times(MINUS_WEIGHTING_SAME_TEAM) ?: 0.0
-            score -= App.gameStates.getPlayerPairAttributes(PlayerPair.create(teamA.player1, teamB.player1))?.numOppose?.toDouble()?.times(MINUS_WEIGHTING_OPPOSE) ?: 0.0
-            score -= App.gameStates.getPlayerPairAttributes(PlayerPair.create(teamA.player1, teamB.player2))?.numOppose?.toDouble()?.times(MINUS_WEIGHTING_OPPOSE) ?: 0.0
-            score -= App.gameStates.getPlayerPairAttributes(PlayerPair.create(teamA.player2, teamB.player1))?.numOppose?.toDouble()?.times(MINUS_WEIGHTING_OPPOSE) ?: 0.0
-            score -= App.gameStates.getPlayerPairAttributes(PlayerPair.create(teamA.player2, teamB.player2))?.numOppose?.toDouble()?.times(MINUS_WEIGHTING_OPPOSE) ?: 0.0
+            score -= App.gameStates.getPlayerPairAttributes(teamA)?.numTeamUp?.toDouble()?.times(MINUS_WEIGHTING_SAME_TEAM) ?: 0.0
+            score -= App.gameStates.getPlayerPairAttributes(teamB)?.numTeamUp?.toDouble()?.times(MINUS_WEIGHTING_SAME_TEAM) ?: 0.0
+            score -= App.gameStates.getPlayerPairAttributes(Team.create(teamA.player1, teamB.player1))?.numOppose?.toDouble()?.times(MINUS_WEIGHTING_OPPOSE) ?: 0.0
+            score -= App.gameStates.getPlayerPairAttributes(Team.create(teamA.player1, teamB.player2))?.numOppose?.toDouble()?.times(MINUS_WEIGHTING_OPPOSE) ?: 0.0
+            score -= App.gameStates.getPlayerPairAttributes(Team.create(teamA.player2, teamB.player1))?.numOppose?.toDouble()?.times(MINUS_WEIGHTING_OPPOSE) ?: 0.0
+            score -= App.gameStates.getPlayerPairAttributes(Team.create(teamA.player2, teamB.player2))?.numOppose?.toDouble()?.times(MINUS_WEIGHTING_OPPOSE) ?: 0.0
             return score.roundToInt()
         }
     }

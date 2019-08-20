@@ -2,12 +2,12 @@ package tw.lifehackers.bghelper
 
 import tw.lifehackers.bghelper.model.Court
 import tw.lifehackers.bghelper.model.Player
-import tw.lifehackers.bghelper.model.PlayerPair
 import tw.lifehackers.bghelper.model.PlayerPairAttributes
+import tw.lifehackers.bghelper.model.Team
 
 class GameStates {
     private val playerList = mutableListOf<Player>()
-    private val playerPairMap = HashMap<PlayerPair, PlayerPairAttributes>()
+    private val playerPairMap = HashMap<Team, PlayerPairAttributes>()
 
     val numTimesPlayed = hashMapOf<String, Int>()
     val courts = mutableListOf<Court>()
@@ -35,13 +35,13 @@ class GameStates {
     fun findPlayer(name: String): Player? =
         playerList.firstOrNull { player -> player.name == name }
 
-    fun getPlayerPairAttributes(playerPair: PlayerPair) = playerPairMap[playerPair]
+    fun getPlayerPairAttributes(team: Team) = playerPairMap[team]
 
-    fun getOrCreatePlayerPairAttributes(playerPair: PlayerPair): PlayerPairAttributes {
-        val existingAttr = playerPairMap[playerPair]
+    fun getOrCreatePlayerPairAttributes(team: Team): PlayerPairAttributes {
+        val existingAttr = playerPairMap[team]
         return if (existingAttr == null) {
             val newAttr = PlayerPairAttributes()
-            playerPairMap[playerPair] = newAttr
+            playerPairMap[team] = newAttr
             newAttr
         } else existingAttr
     }
