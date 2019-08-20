@@ -28,11 +28,11 @@ class Court {
         match.teamA.player2.increaseNumTimesPlayed()
         match.teamB.player1.increaseNumTimesPlayed()
         match.teamB.player2.increaseNumTimesPlayed()
-        gameStates.getOrCreatePlayerPairAttributes(match.teamA.toPlayerPair()).numTeamUp++
-        gameStates.getOrCreatePlayerPairAttributes(match.teamB.toPlayerPair()).numTeamUp++
-        gameStates.getOrCreatePlayerPairAttributes(PlayerPair.create(match.teamA.player1, match.teamB.player1)).numOppose++
-        gameStates.getOrCreatePlayerPairAttributes(PlayerPair.create(match.teamA.player1, match.teamB.player2)).numOppose++
-        gameStates.getOrCreatePlayerPairAttributes(PlayerPair.create(match.teamA.player2, match.teamB.player1)).numOppose++
-        gameStates.getOrCreatePlayerPairAttributes(PlayerPair.create(match.teamA.player2, match.teamB.player2)).numOppose++
+        gameStates.getOrCreatePlayerPairAttributes(match.teamA).numTeamUp++
+        gameStates.getOrCreatePlayerPairAttributes(match.teamB).numTeamUp++
+        gameStates.getOrCreatePlayerPairAttributes(Team.create(match.teamA.player1, match.teamB.player1)).numOppose++
+        gameStates.getOrCreatePlayerPairAttributes(Team.create(match.teamA.player1, match.teamB.player2)).numOppose++
+        gameStates.getOrCreatePlayerPairAttributes(Team.create(match.teamA.player2, match.teamB.player1)).numOppose++
+        gameStates.getOrCreatePlayerPairAttributes(Team.create(match.teamA.player2, match.teamB.player2)).numOppose++
     }
 }
